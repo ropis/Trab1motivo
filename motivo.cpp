@@ -2,6 +2,7 @@
 
 MuMaterial Escolha(MuMaterial* mat){
 	int numerorand = Between (0,5);
+	cout << numerorand;
 	long total = mat->NumberOfNotes();
 	int half = total/2;
 	MuMaterial tmp;
@@ -18,9 +19,6 @@ MuMaterial Escolha(MuMaterial* mat){
 			break;
 		case 2:
 			mat->Invert();
-			break;
-		case 3:
-			mat->Transpose(5);
 			break;
 		case 4:
 			tmp.Clear();
@@ -80,14 +78,42 @@ int main(void)
 		motivo += nota;
 	}
 	
-	int vez=3;
 	mat = motivo;
 	melodiafinal = motivo;
-	while (vez--){
+	int vez=4;
+	MuNote notafinal;
+	short pitchfinal;
+	long totalmel;
+	int trans[2] = {2, -2};
+	
+	while (vez--){	
+
+		totalmel = melodiafinal.NumberOfNotes();
+		notafinal = melodiafinal.GetNote(totalmel-1);
+		pitchfinal = notafinal.Pitch();
+		pitchfinal = pitchfinal%12;
+
+		mat.Transpose(pitchfinal+trans[Between(0,1)]);
+
 		mat = Escolha(&mat);
 		melodiafinal += mat;
-		
 	}
+	
+	mat=motivo;
+	long totalmot = mat.NumberOfNotes();
+	
+	;
+	MuMaterial tmp;
+
+	
+
+
+	cout << endl<< "PITCH FINAL = " << pitchfinal%12 << endl;
+	tmp+=notafinal;
+	tmp.Transpose(12);
+	melodiafinal = melodiafinal.GetNotes(0,0,totalmel-2);
+	melodiafinal += tmp;
+	//tmp.PlaybackWithCsound("/home/rodrigo/MuM-master/teste");
 
 	
 	
